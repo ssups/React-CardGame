@@ -1,17 +1,17 @@
-import React, { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Wrap, Inventory, InventoryWrap, Item } from "./style";
-import { Card } from "../../components";
-import { PopUp, PopUP } from "../../components";
-import { itemAction, userAction } from "../../redux/middleware";
-import AudioPlayer from "react-h5-audio-player";
-import { myPageSound } from "../../sounds";
-import svg from "../../icons/svgs";
+import React, { useEffect, useState, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Wrap, Inventory, InventoryWrap, Item } from './style';
+import { Card } from '../../components';
+import { PopUp, PopUP } from '../../components';
+import { itemAction, userAction } from '../../redux/middleware';
+import AudioPlayer from 'react-h5-audio-player';
+import { myPageSound } from '../../sounds';
+import svg from '../../icons/svgs';
 const MyPage = () => {
   const userId = useSelector(state => state.loginReducer.id);
-  // const userId = sessionStorage.getItem("user_id");
   const cards = useSelector(state => state.cardReducer);
   const items = useSelector(state => state.itemReducer);
+  const isSoundOn = useSelector(state => state.soundReducer.isSoundOn);
   const [speed, setSpeed] = useState(3);
   const [purpose, setPurpose] = useState(null);
   const [popUpSvg, setPopUpSvg] = useState(null);
@@ -23,13 +23,16 @@ const MyPage = () => {
   const audioRef = useRef();
 
   useEffect(() => {
-    // console.log(items);
-  }, [items]);
+    const audio = audioRef.current.audio.current;
+    isSoundOn ? audio.play() : audio.pause();
+  }, [isSoundOn]);
+
   useEffect(() => {
     dispatch(userAction.getUserCards(userId));
     // 밑에 아이템 가져오는거는 알림때 필요해서 header에서 실행시킴
     // dispatch(userAction.getUserItems(userId));
   }, []);
+
   useEffect(() => {
     clearInterval(interval.current);
     moveSlide();
@@ -61,19 +64,20 @@ const MyPage = () => {
   }
   function showItem(e) {
     // console.log(e.target.dataset.item);
-    setPurpose("inventory");
+    setPurpose('inventory');
     setPopUp(true);
     setPopUpSvg(svg[e.currentTarget.dataset.item]);
   }
 
   return (
-    <div className="contents" style={{ position: "relative" }}>
+    <div className="contents" style={{ position: 'relative' }}>
       <AudioPlayer
         src={myPageSound}
         autoPlay={true}
         ref={audioRef}
         volume={1}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
+        loop={true}
       />
       {popUp ? (
         <PopUp
@@ -85,14 +89,14 @@ const MyPage = () => {
         ></PopUp>
       ) : null}
       <Wrap>
-        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
           <div
             style={{
-              backgroundColor: "white",
-              width: "150px",
-              textAlign: "center",
-              border: "2px solid black",
-              borderRadius: "30px",
+              backgroundColor: 'white',
+              width: '150px',
+              textAlign: 'center',
+              border: '2px solid black',
+              borderRadius: '30px',
             }}
           >
             인벤토리
@@ -126,14 +130,14 @@ const MyPage = () => {
             ) : null}
           </InventoryWrap>
         </Inventory>
-        <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
           <div
             style={{
-              backgroundColor: "white",
-              width: "150px",
-              textAlign: "center",
-              border: "2px solid black",
-              borderRadius: "30px",
+              backgroundColor: 'white',
+              width: '150px',
+              textAlign: 'center',
+              border: '2px solid black',
+              borderRadius: '30px',
             }}
           >
             카드덱

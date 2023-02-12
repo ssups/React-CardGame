@@ -1,10 +1,10 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { userAction } from "../../redux/middleware";
-import { ImgSlide } from "./style";
-import AudioPlayer from "react-h5-audio-player";
-import { mainSound } from "../../sounds";
+import React, { useEffect, useRef } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
+import { userAction } from '../../redux/middleware';
+import { ImgSlide } from './style';
+import AudioPlayer from 'react-h5-audio-player';
+import { mainSound } from '../../sounds';
 import {
   Wrap,
   BoardWrap,
@@ -14,21 +14,24 @@ import {
   Title,
   BoardContents,
   BoardList,
-} from "./style";
+} from './style';
 
 const Main = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const rankData = useSelector(state => state.pointReducer.all_users);
   const audioRef = useRef();
+  const isSoundOn = useSelector(state => state.soundReducer.isSoundOn);
 
   useEffect(() => {
     dispatch(userAction.getAllUsersPoints());
   }, []);
-  console.log(rankData);
-  function invert(e) {
-    e.target.style.filter = "invert()";
-  }
+
+  useEffect(() => {
+    const audio = audioRef.current.audio.current;
+    isSoundOn ? audio.play() : audio.pause();
+  }, [isSoundOn]);
+
   return (
     <div className="contents">
       <AudioPlayer
@@ -36,12 +39,13 @@ const Main = () => {
         autoPlay={true}
         ref={audioRef}
         volume={1}
-        style={{ display: "none" }}
+        style={{ display: 'none' }}
+        loop={true}
       />
       <Wrap>
         <ImgSlide
-          onMouseEnter={e => (e.target.style.filter = "invert()")}
-          onMouseLeave={e => (e.target.style.filter = "none")}
+          onMouseEnter={e => (e.target.style.filter = 'invert()')}
+          onMouseLeave={e => (e.target.style.filter = 'none')}
         ></ImgSlide>
         <BoardWrap>
           <LeftBoard>
@@ -57,17 +61,17 @@ const Main = () => {
             <Title>랭킹</Title>
             <BoardContents>
               <BoardList>
-                <span style={{ width: "100%" }}>등수</span>
-                <span style={{ width: "100%", textAlign: "center" }}>아이디</span>
-                <span style={{ width: "100%", textAlign: "right" }}>점수</span>
+                <span style={{ width: '100%' }}>등수</span>
+                <span style={{ width: '100%', textAlign: 'center' }}>아이디</span>
+                <span style={{ width: '100%', textAlign: 'right' }}>점수</span>
               </BoardList>
               {rankData.map((el, ind) => {
                 return (
                   <BoardList key={el && el.user_id}>
-                    <span style={{ width: "100%" }}>{ind + 1}</span>
-                    <span style={{ width: "100%", textAlign: "center" }}>{el?.user_id}</span>
-                    <span style={{ width: "100%", textAlign: "right" }}>
-                      {el?.point?.toLocaleString() + "점"}
+                    <span style={{ width: '100%' }}>{ind + 1}</span>
+                    <span style={{ width: '100%', textAlign: 'center' }}>{el?.user_id}</span>
+                    <span style={{ width: '100%', textAlign: 'right' }}>
+                      {el?.point?.toLocaleString() + '점'}
                     </span>
                   </BoardList>
                 );

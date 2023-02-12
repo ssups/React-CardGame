@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
   Whole,
   Wrap,
@@ -13,10 +13,11 @@ import {
   UserContents,
   Alarm,
   AlarmNum,
-} from "./style";
-import { userAction } from "../../redux/middleware";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBell } from "@fortawesome/free-regular-svg-icons";
+} from './style';
+import { userAction } from '../../redux/middleware';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBell } from '@fortawesome/free-regular-svg-icons';
+import { faVolumeOff, faVolumeMute, faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
 import {
   logo,
   flower_greyblue,
@@ -24,16 +25,17 @@ import {
   flower_red,
   flower_skyblue,
   flower_yellow,
-} from "../../images";
+} from '../../images';
 
 const Header = ({ setOnLoad }) => {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const userData = useSelector(state => state.loginReducer);
   const items = useSelector(state => state.itemReducer);
+  const isSoundOn = useSelector(state => state.soundReducer.isSoundOn);
   const itemsAmount = Object.values(items).reduce((acc, cur) => {
     let numCur = 0;
-    if (typeof cur === "number") numCur = cur;
+    if (typeof cur === 'number') numCur = cur;
     return acc + numCur;
   }, 0);
   function move(path) {
@@ -42,7 +44,7 @@ const Header = ({ setOnLoad }) => {
   }
   function logout() {
     sessionStorage.clear();
-    dispatch({ type: "LOGOUT" });
+    dispatch({ type: 'LOGOUT' });
     setOnLoad(true);
     // nav("/");
   }
@@ -55,8 +57,8 @@ const Header = ({ setOnLoad }) => {
       <Whole>
         <Wrap>
           <Logo data-path="/main" onClick={e => move(e.currentTarget.dataset.path)}>
-            <img style={{ width: "80px" }} src={logo} alt="" />
-            <div style={{ width: "120px", textAlign: "center" }}>페이지 이름</div>
+            <img style={{ width: '80px' }} src={logo} alt="" />
+            <div style={{ width: '120px', textAlign: 'center' }}>페이지 이름</div>
           </Logo>
           <Menu>
             <MenuLi data-path="/shop" onClick={e => move(e.currentTarget.dataset.path)}>
@@ -94,18 +96,26 @@ const Header = ({ setOnLoad }) => {
             <UserContents data-path="/mypage" onClick={e => move(e.currentTarget.dataset.path)}>
               마이페이지
               <Alarm>
-                <FontAwesomeIcon icon={faBell} className={itemsAmount ? "active" : ""} />
-                <AlarmNum style={{ color: itemsAmount ? "red" : "" }}>{itemsAmount}</AlarmNum>
+                <FontAwesomeIcon icon={faBell} className={itemsAmount ? 'active' : ''} />
+                <AlarmNum style={{ color: itemsAmount ? 'red' : '' }}>{itemsAmount}</AlarmNum>
               </Alarm>
             </UserContents>
             /
             <UserContents data-path="/logout" onClick={logout}>
               로그아웃
             </UserContents>
-            <UserContents style={{ fontSize: "20px" }}>
+            <UserContents style={{ fontSize: '20px' }}>
               {/* <span style={{ fontWeight: "900" }}>{userData.id}</span>님 */}
-              <span style={{ marginRight: "10px" }}> 보유 포인트:</span>
+              <span style={{ marginRight: '10px' }}> 보유 포인트:</span>
               {userData.point?.toLocaleString()}P
+              <span
+                style={{ marginLeft: '20px', cursor: 'pointer' }}
+                onClick={() =>
+                  isSoundOn ? dispatch({ type: 'SOUND_OFF' }) : dispatch({ type: 'SOUND_ON' })
+                }
+              >
+                <FontAwesomeIcon icon={isSoundOn ? faVolumeHigh : faVolumeMute} />
+              </span>
             </UserContents>
           </User>
         </Wrap>
