@@ -1,7 +1,8 @@
-import React from "react";
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import axios from "axios";
+import React from 'react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import axios from 'axios';
+import { BASE_URL } from '../../constant/api';
 
 const Editor = ({ setPostData, mode, data, setModifyData }) => {
   const customUploadAdapter = loader => {
@@ -10,15 +11,15 @@ const Editor = ({ setPostData, mode, data, setModifyData }) => {
         return new Promise((resolve, reject) => {
           const data = new FormData();
           loader.file.then(file => {
-            data.append("name", file.name);
-            data.append("file", file);
+            data.append('name', file.name);
+            data.append('file', file);
             axios({
-              method: "post",
-              url: "http://localhost:4000/api/upload",
+              method: 'post',
+              url: BASE_URL + '/api/upload',
               data,
             }).then(res => {
               resolve({
-                default: `http://localhost:4000/images/${res.data.filename}`,
+                default: `${BASE_URL}/images/${res.data.filename}`,
               });
             });
           });
@@ -27,7 +28,7 @@ const Editor = ({ setPostData, mode, data, setModifyData }) => {
     };
   };
   function uploadPlugin(editor) {
-    editor.plugins.get("FileRepository").createUploadAdapter = loader => {
+    editor.plugins.get('FileRepository').createUploadAdapter = loader => {
       return customUploadAdapter(loader);
     };
   }
@@ -37,10 +38,10 @@ const Editor = ({ setPostData, mode, data, setModifyData }) => {
       config={{
         extraPlugins: [uploadPlugin],
       }}
-      data={mode === "modify" ? data : null}
+      data={mode === 'modify' ? data : null}
       onChange={(e, editor) => {
         const data = editor.getData();
-        mode === "modify" ? setModifyData(data) : setPostData(data);
+        mode === 'modify' ? setModifyData(data) : setPostData(data);
         console.log(data);
       }}
     />

@@ -1,10 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
+import { BASE_URL } from '../../constant/api';
 
 function join(id, nickName, pw, setSwitched) {
   return async (dispatch, getState) => {
     const { data: response } = await axios({
-      method: "post",
-      url: "http://localhost:4000/join",
+      method: 'post',
+      url: BASE_URL + '/join',
       data: { id, nickName, pw },
     });
     console.log(response);
@@ -20,31 +21,31 @@ function join(id, nickName, pw, setSwitched) {
 function getUserCards(id) {
   return async (dispatch, state) => {
     const { data: response } = await axios({
-      method: "post",
-      url: "http://localhost:4000/get_user_cards",
+      method: 'post',
+      url: BASE_URL + '/get_user_cards',
       data: { id },
     });
-    if (response) dispatch({ type: "GET_USER_CARDS", payload: { id, data: response } });
+    if (response) dispatch({ type: 'GET_USER_CARDS', payload: { id, data: response } });
   };
 }
 
 function getUserItems(id) {
   return async (dispatch, state) => {
     const { data: response } = await axios({
-      method: "post",
-      url: "http://localhost:4000/get_user_items",
+      method: 'post',
+      url: BASE_URL + '/get_user_items',
       data: { id },
     });
-    if (response) dispatch({ type: "GET_USER_ITEMS", payload: response });
+    if (response) dispatch({ type: 'GET_USER_ITEMS', payload: response });
   };
 }
 
 function getAllUsersPoints() {
   return async (dispatch, state) => {
     const { data: response } = await axios({
-      url: "http://localhost:4000/get_users_point",
+      url: BASE_URL + '/get_users_point',
     });
-    response && dispatch({ type: "GET_ALL_USERS_POINTS", payload: response });
+    response && dispatch({ type: 'GET_ALL_USERS_POINTS', payload: response });
   };
 }
 
