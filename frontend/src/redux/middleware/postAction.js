@@ -11,6 +11,15 @@ function getAllPosts() {
   };
 }
 
+function getTopPosts() {
+  return async (dispatch, state) => {
+    const { data: response } = await axios({
+      url: BASE_URL + '/get_top_posts',
+    });
+    dispatch({ type: 'GET_TOP_POSTS', payload: response });
+  };
+}
+
 function registerPost(id, title, main, setIsPosting, setOrder) {
   return async (dispatch, state) => {
     const { data: response } = await axios({
@@ -71,5 +80,5 @@ function increaseVisited(postId) {
   };
 }
 
-const postAction = { registerPost, getAllPosts, delPost, increaseVisited, modifyPost };
+const postAction = { registerPost, getAllPosts, getTopPosts, delPost, increaseVisited, modifyPost };
 export default postAction;
