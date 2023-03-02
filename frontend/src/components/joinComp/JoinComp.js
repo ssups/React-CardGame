@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
-import { Wrap, Legend, Item, Label, Input, Fieldset, Button } from "./style";
-import { userAction } from "../../redux/middleware";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useRef } from 'react';
+import { Wrap, Legend, Item, Label, Input, Fieldset, Button } from './style';
+import { userAction } from '../../redux/middleware';
+import { useDispatch } from 'react-redux';
 
 const JoinComp = ({ setSwitched }) => {
   const inputs = useRef();
@@ -11,16 +11,16 @@ const JoinComp = ({ setSwitched }) => {
     const nickVal = inputs.nickName.value;
     const pwVal = inputs.pw.value;
     // 검사;
-    if (idVal === "" || idVal.includes(" ")) {
-      alert("아이디 공백없이 입력하세요");
+    if (idVal === '' || idVal.includes(' ')) {
+      alert('아이디 공백없이 입력하세요');
       return;
     }
-    if (nickVal === "" || nickVal.includes(" ")) {
-      alert("닉네임 공백없이 입력하세요");
+    if (nickVal === '' || nickVal.includes(' ')) {
+      alert('닉네임 공백없이 입력하세요');
       return;
     }
-    if (pwVal === "" || pwVal.includes(" ")) {
-      alert("비밀번호 공백없이 입력하세요");
+    if (pwVal === '' || pwVal.includes(' ')) {
+      alert('비밀번호 공백없이 입력하세요');
       return;
     }
 
@@ -34,16 +34,16 @@ const JoinComp = ({ setSwitched }) => {
       <Fieldset>
         <Legend>명부</Legend>
         <Item>
-          <Label htmlFor="id">아이디: </Label>{" "}
-          <Input type="text" ref={el => (inputs.id = el)}></Input>{" "}
+          <Label htmlFor="id">아이디: </Label>{' '}
+          <Input type="text" ref={el => (inputs.id = el)}></Input>{' '}
         </Item>
         <Item>
-          <Label htmlFor="nickName">닉네임: </Label>{" "}
+          <Label htmlFor="nickName">닉네임: </Label>{' '}
           <Input type="text" ref={el => (inputs.nickName = el)}></Input>
         </Item>
         <Item>
           <Label htmlFor="pw">비밀번호:</Label>
-          <Input type="text" ref={el => (inputs.pw = el)}></Input>
+          <Input type="password" ref={el => (inputs.pw = el)}></Input>
         </Item>
         <Item>
           <Button onClick={register}>기록</Button>
