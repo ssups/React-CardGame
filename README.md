@@ -2,7 +2,7 @@
 
 ## 🖥️ Project Page
 
-<li><a href = "http://ec2-13-125-108-142.ap-northeast-2.compute.amazonaws.com">http://ec2-13-125-108-142.ap-northeast-2.compute.amazonaws.com/</a></li>
+<li><a href = "https://card.ssups.shop">https://card.ssups.shop/</a></li>
 
 id: admin <br>
 pw: 123
